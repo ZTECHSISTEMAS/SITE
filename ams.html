@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS Ztech — Suporte e Consultoria Winthor & TOTVS Chef</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #011226;
+    --navy-mid: #02356F;
+    --navy-bright: #0456B5;
+    --green: #81D653;
+    --green-dark: #54AE32;
+    --green-deep: #306F1D;
+    --green-pale: rgba(129,214,83,0.12);
+    --gray-bg: #EBEBEB;
+    --gray-text: #5A6A78;
+    --border: rgba(1,18,38,0.12);
+    --white: #FFFFFF;
+    --bg-soft: #F4F7FA;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--navy);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%; height: 68px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(1,18,38,0.08); }
+  .nav-logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem;
+    color: var(--navy); text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-logo-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
+  nav ul { display: flex; gap: 2rem; list-style: none; }
+  nav a { text-decoration: none; color: var(--gray-text); font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+  nav a:hover { color: var(--navy); }
+  .nav-cta {
+    background: var(--green) !important; color: var(--navy) !important;
+    padding: 0.5rem 1.3rem; border-radius: 2rem; font-weight: 700 !important;
+  }
+  .nav-cta:hover { background: var(--green-dark) !important; }
+  @media (max-width: 860px) { nav ul { display: none; } }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--navy);
+    padding: 120px 5% 80px;
+    position: relative; overflow: hidden;
+    min-height: 100vh; display: flex; align-items: center;
+  }
+  .hero-bg-glow {
+    position: absolute; border-radius: 50%; pointer-events: none;
+  }
+  .hero-bg-glow-1 {
+    top: -100px; right: -100px; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(129,214,83,0.12) 0%, transparent 70%);
+  }
+  .hero-bg-glow-2 {
+    bottom: -80px; left: -80px; width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(4,86,181,0.15) 0%, transparent 70%);
+  }
+  .hero-inner {
+    position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+  @media (max-width: 860px) { .hero-inner { grid-template-columns: 1fr; } }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(129,214,83,0.15); border: 1px solid rgba(129,214,83,0.3);
+    color: var(--green); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 0.4rem 1rem; border-radius: 2rem; margin-bottom: 1.5rem;
+  }
+  .hero-tag::before {
+    content: ''; width: 6px; height: 6px; background: var(--green);
+    border-radius: 50%; animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.5)} }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(2.4rem, 4.5vw, 3.6rem); line-height: 1.1;
+    color: var(--white); margin-bottom: 1.5rem; letter-spacing: -0.02em;
+  }
+  .hero h1 em { font-style: normal; color: var(--green); }
+
+  .hero-desc {
+    font-size: 1.05rem; color: rgba(255,255,255,0.65); line-height: 1.8;
+    margin-bottom: 2.5rem; font-weight: 300; max-width: 480px;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--green); color: var(--navy); padding: 0.9rem 2rem;
+    border-radius: 2rem; font-size: 0.95rem; font-weight: 700;
+    text-decoration: none; transition: background 0.2s, transform 0.2s; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--green-dark); color: var(--white); transform: translateY(-1px); }
+  .btn-ghost {
+    color: rgba(255,255,255,0.65); font-size: 0.9rem; font-weight: 400;
+    text-decoration: none; display: flex; align-items: center; gap: 0.4rem;
+    transition: color 0.2s, gap 0.2s;
+  }
+  .btn-ghost:hover { color: var(--white); gap: 0.7rem; }
+  .btn-ghost::after { content: '→'; color: var(--green); }
+
+  /* Hero Right — cards */
+  .hero-right { display: flex; flex-direction: column; gap: 1rem; }
+  .hero-problem-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 1.25rem; padding: 1.5rem;
+  }
+  .hero-problem-card h3 {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem;
+    color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+  .problem-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .problem-list li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.45;
+  }
+  .problem-list li::before {
+    content: '✕'; color: #FF6B6B; font-size: 0.75rem; font-weight: 900;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .hero-solution-card {
+    background: linear-gradient(135deg, rgba(129,214,83,0.18) 0%, rgba(84,174,50,0.1) 100%);
+    border: 1px solid rgba(129,214,83,0.3); border-radius: 1.25rem; padding: 1.5rem;
+  }
+  .hero-solution-card h3 {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem;
+    color: var(--green); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem;
+  }
+  .solution-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .solution-list li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.45;
+  }
+  .solution-list li::before {
+    content: '✓'; color: var(--green); font-size: 0.85rem; font-weight: 900;
+    flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* ─── WHAT IS AMS ─── */
+  .what-section {
+    padding: 100px 5%; background: var(--bg-soft);
+  }
+  .what-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  @media (max-width: 860px) { .what-inner { grid-template-columns: 1fr; gap: 3rem; } }
+
+  .section-eyebrow {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--green-dark); margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.15;
+    letter-spacing: -0.02em; margin-bottom: 1.25rem; color: var(--navy);
+  }
+  .section-title em { font-style: normal; color: var(--green-dark); }
+  .section-desc {
+    color: var(--gray-text); font-size: 1.02rem; line-height: 1.8; font-weight: 400;
+    margin-bottom: 2rem;
+  }
+
+  .what-points { display: flex; flex-direction: column; gap: 1.25rem; }
+  .what-point {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 1rem; padding: 1.25rem; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .what-point:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(1,18,38,0.08); }
+  .what-point-icon {
+    width: 40px; height: 40px; border-radius: 0.75rem;
+    background: var(--green-pale); display: flex; align-items: center;
+    justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+  }
+  .what-point h4 { font-weight: 700; font-size: 0.95rem; color: var(--navy); margin-bottom: 0.2rem; }
+  .what-point p { font-size: 0.88rem; color: var(--gray-text); line-height: 1.6; font-weight: 300; }
+
+  .what-visual {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .what-stat {
+    background: var(--navy); border-radius: 1.25rem; padding: 2rem 1.5rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .what-stat.accent { background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-dark) 100%); }
+  .what-stat.span2 { grid-column: 1 / -1; }
+  .what-stat-num {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 2.8rem; color: var(--green); line-height: 1; margin-bottom: 0.4rem;
+  }
+  .what-stat.accent .what-stat-num { color: var(--white); }
+  .what-stat-label {
+    font-size: 0.85rem; color: rgba(255,255,255,0.55); font-weight: 300; line-height: 1.4;
+  }
+  .what-stat.accent .what-stat-label { color: rgba(255,255,255,0.8); }
+
+  /* ─── TARGET AUDIENCE ─── */
+  .audience-section {
+    padding: 100px 5%; background: var(--white);
+  }
+  .audience-inner { max-width: 1100px; margin: 0 auto; }
+  .audience-header { text-align: center; max-width: 600px; margin: 0 auto 3rem; }
+
+  .audience-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem;
+  }
+  .audience-card {
+    background: var(--bg-soft); border: 1px solid var(--border);
+    border-radius: 1.25rem; padding: 2rem; text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .audience-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--green); transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+  }
+  .audience-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(1,18,38,0.08); border-color: rgba(129,214,83,0.3); }
+  .audience-card:hover::before { transform: scaleX(1); }
+  .audience-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .audience-card h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; color: var(--navy); }
+  .audience-card p { font-size: 0.88rem; color: var(--gray-text); line-height: 1.6; font-weight: 300; }
+
+  /* ─── PLANS ─── */
+  .plans-section {
+    padding: 100px 5%; background: var(--navy);
+    position: relative; overflow: hidden;
+  }
+  .plans-section::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(129,214,83,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .plans-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+  .plans-header { text-align: center; max-width: 600px; margin: 0 auto 3.5rem; }
+  .plans-header .section-eyebrow { color: var(--green); }
+  .plans-header .section-title { color: var(--white); }
+  .plans-header .section-desc { color: rgba(255,255,255,0.6); }
+
+  .plans-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+  @media (max-width: 900px) { .plans-grid { grid-template-columns: 1fr; } }
+
+  .plan-card {
+    background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 1.5rem; overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s;
+  }
+  .plan-card:hover { transform: translateY(-6px); }
+  .plan-card.featured { border-color: var(--green); background: rgba(129,214,83,0.06); }
+
+  .plan-header { padding: 2rem 2rem 1.5rem; position: relative; }
+  .plan-basic .plan-header { border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .plan-standard .plan-header { border-bottom: 1px solid rgba(129,214,83,0.2); }
+  .plan-advanced .plan-header { border-bottom: 1px solid rgba(255,255,255,0.07); }
+
+  .plan-level-badge {
+    display: inline-block; font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.3rem 0.9rem; border-radius: 2rem; margin-bottom: 1.25rem;
+  }
+  .plan-basic .plan-level-badge { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
+  .plan-standard .plan-level-badge { background: rgba(129,214,83,0.2); color: var(--green); border: 1px solid rgba(129,214,83,0.3); }
+  .plan-advanced .plan-level-badge { background: rgba(4,86,181,0.3); color: #7AB8F5; border: 1px solid rgba(4,86,181,0.3); }
+
+  .featured-ribbon {
+    position: absolute; top: 1.25rem; right: 1.25rem;
+    background: var(--green); color: var(--navy);
+    font-size: 0.65rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.25rem 0.8rem; border-radius: 2rem;
+  }
+
+  .plan-name {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.6rem;
+    color: var(--white); margin-bottom: 0.4rem;
+  }
+  .plan-tagline { font-size: 0.88rem; color: rgba(255,255,255,0.5); line-height: 1.5; margin-bottom: 1rem; }
+
+  .plan-sla {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 0.5rem; padding: 0.6rem 0.9rem;
+    font-size: 0.82rem; color: rgba(255,255,255,0.7); font-weight: 500;
+  }
+  .plan-sla-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  .plan-standard .plan-sla { border-color: rgba(129,214,83,0.2); background: rgba(129,214,83,0.05); }
+  .plan-advanced .plan-sla { border-color: rgba(4,86,181,0.2); background: rgba(4,86,181,0.08); }
+  .plan-advanced .plan-sla-dot { background: #7AB8F5; }
+
+  .plan-body { padding: 1.5rem 2rem 2rem; }
+
+  .plan-items { list-style: none; margin-bottom: 1.5rem; }
+  .plan-items li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: 0.88rem; color: rgba(255,255,255,0.65);
+    padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); line-height: 1.45;
+  }
+  .plan-items li:last-child { border-bottom: none; }
+  .plan-items li::before {
+    content: ''; width: 14px; height: 14px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 2px;
+    background-size: 8px; background-repeat: no-repeat; background-position: center;
+  }
+  .plan-basic .plan-items li::before {
+    background-color: rgba(255,255,255,0.08);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%2381D653' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .plan-standard .plan-items li::before {
+    background-color: rgba(129,214,83,0.15);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%2381D653' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .plan-advanced .plan-items li::before {
+    background-color: rgba(4,86,181,0.2);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%237AB8F5' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+
+  .plan-highlight {
+    border-radius: 0.75rem; padding: 1rem 1.25rem;
+    font-size: 0.85rem; line-height: 1.55; font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+  .plan-basic .plan-highlight { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); }
+  .plan-standard .plan-highlight { background: rgba(129,214,83,0.08); color: rgba(129,214,83,0.9); border: 1px solid rgba(129,214,83,0.2); }
+  .plan-advanced .plan-highlight { background: rgba(4,86,181,0.1); color: #7AB8F5; border: 1px solid rgba(4,86,181,0.2); }
+
+  .plan-channels {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;
+  }
+  .plan-channel {
+    display: flex; align-items: center; gap: 0.3rem;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 2rem; padding: 0.3rem 0.7rem;
+    font-size: 0.75rem; color: rgba(255,255,255,0.5);
+  }
+
+  .btn-plan {
+    display: block; text-align: center; padding: 0.85rem 1.5rem;
+    border-radius: 2rem; font-size: 0.9rem; font-weight: 700;
+    text-decoration: none; transition: background 0.2s, transform 0.15s;
+  }
+  .plan-basic .btn-plan {
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .plan-basic .btn-plan:hover { background: rgba(255,255,255,0.15); color: var(--white); transform: translateY(-1px); }
+  .plan-standard .btn-plan { background: var(--green); color: var(--navy); }
+  .plan-standard .btn-plan:hover { background: var(--green-dark); color: var(--white); transform: translateY(-1px); }
+  .plan-advanced .btn-plan { background: var(--navy-bright); color: var(--white); }
+  .plan-advanced .btn-plan:hover { background: #0368d6; transform: translateY(-1px); }
+
+  /* ─── COMPARISON TABLE ─── */
+  .compare-section { padding: 80px 5%; background: var(--bg-soft); }
+  .compare-inner { max-width: 900px; margin: 0 auto; }
+  .compare-header { text-align: center; max-width: 560px; margin: 0 auto 3rem; }
+
+  .compare-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 1.25rem; overflow: hidden; box-shadow: 0 4px 24px rgba(1,18,38,0.07); }
+  .compare-table th {
+    padding: 1rem 1.25rem; text-align: center;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem;
+    background: var(--navy); color: var(--white); border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .compare-table th:first-child { text-align: left; width: 40%; }
+  .compare-table th.th-featured { color: var(--green); }
+  .compare-table td {
+    padding: 0.9rem 1.25rem; font-size: 0.88rem; color: var(--gray-text);
+    border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); text-align: center;
+  }
+  .compare-table td:first-child { text-align: left; font-weight: 500; color: var(--navy); }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td.featured-col { background: rgba(129,214,83,0.04); }
+  .check-yes { color: var(--green-dark); font-size: 1rem; font-weight: 900; }
+  .check-no { color: #CCC; font-size: 1rem; }
+  .check-partial { color: var(--green-dark); font-size: 0.8rem; font-weight: 600; }
+  @media (max-width: 600px) { .compare-section { display: none; } }
+
+  /* ─── INDICATORS ─── */
+  .indicators-section {
+    padding: 100px 5%; background: var(--navy);
+    position: relative; overflow: hidden;
+  }
+  .indicators-section::after {
+    content: ''; position: absolute; bottom: -60px; left: -60px;
+    width: 350px; height: 350px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(4,86,181,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .indicators-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+  .indicators-header { text-align: center; max-width: 600px; margin: 0 auto 3rem; }
+  .indicators-header .section-eyebrow { color: var(--green); }
+  .indicators-header .section-title { color: var(--white); }
+  .indicators-header .section-desc { color: rgba(255,255,255,0.6); }
+
+  .indicators-count {
+    text-align: center; margin-bottom: 2rem;
+    font-family: 'Syne', sans-serif; font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 800; color: var(--green); line-height: 1;
+  }
+  .indicators-count span { color: rgba(255,255,255,0.3); font-size: 1.5rem; display: block; font-weight: 300; margin-top: 0.4rem; font-family: 'DM Sans', sans-serif; }
+
+  .indicators-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem; max-width: 900px; margin: 0 auto 3rem;
+  }
+  .indicator-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 1rem; padding: 1.25rem 1rem; text-align: center;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .indicator-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(129,214,83,0.25); }
+  .indicator-icon { font-size: 1.6rem; display: block; margin-bottom: 0.6rem; }
+  .indicator-name { font-size: 0.82rem; color: rgba(255,255,255,0.7); font-weight: 500; line-height: 1.35; }
+
+  .benefits-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem;
+  }
+  .benefit-item {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 0.75rem; padding: 1rem 1.25rem;
+    display: flex; align-items: flex-start; gap: 0.75rem;
+  }
+  .benefit-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; margin-top: 4px; }
+  .benefit-text { font-size: 0.87rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
+
+  /* ─── DIFFERENTIALS ─── */
+  .diff-section { padding: 100px 5%; background: var(--white); }
+  .diff-inner { max-width: 1100px; margin: 0 auto; }
+  .diff-header { text-align: center; max-width: 600px; margin: 0 auto 3.5rem; }
+
+  .diff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .diff-card {
+    border: 1px solid var(--border); border-radius: 1.5rem; padding: 2rem;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .diff-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(1,18,38,0.09); border-color: rgba(129,214,83,0.35); }
+  .diff-card-num {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.5rem;
+    color: var(--green-pale); line-height: 1; margin-bottom: 0.75rem; border: 2px solid rgba(129,214,83,0.2);
+    width: 60px; height: 60px; border-radius: 1rem; display: flex; align-items: center;
+    justify-content: center; font-size: 1.4rem; color: var(--green-dark); background: var(--green-pale);
+  }
+  .diff-card h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--navy); }
+  .diff-card p { font-size: 0.9rem; color: var(--gray-text); line-height: 1.65; font-weight: 300; }
+
+  /* ─── COMPLEMENTARY SERVICES ─── */
+  .services-section { padding: 100px 5%; background: var(--navy); }
+  .services-inner { max-width: 1100px; margin: 0 auto; }
+  .services-header { margin-bottom: 3rem; }
+  .services-header .section-eyebrow { color: var(--green); }
+  .services-header .section-title { color: var(--white); }
+  .services-header .section-desc { color: rgba(255,255,255,0.6); }
+
+  .services-wrapper {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 1.5rem; padding: 3rem; display: grid;
+    grid-template-columns: repeat(3, 1fr); gap: 2.5rem;
+  }
+  @media (max-width: 800px) { .services-wrapper { grid-template-columns: 1fr; } }
+
+  .service-col-title {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--green);
+    margin-bottom: 1.25rem; padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .service-item {
+    margin-bottom: 0.75rem; font-size: 0.9rem; color: rgba(255,255,255,0.65);
+    font-weight: 300; line-height: 1.4; padding-left: 1rem; position: relative;
+  }
+  .service-item::before {
+    content: ''; position: absolute; left: 0; top: 0.55em;
+    width: 5px; height: 5px; background: var(--green); border-radius: 50%;
+  }
+  .service-item-sub { font-size: 0.78rem; color: rgba(255,255,255,0.3); margin-top: 0.1rem; }
+
+  /* ─── CTA ─── */
+  .cta-section { padding: 100px 5%; background: var(--bg-soft); }
+  .cta-inner {
+    max-width: 900px; margin: 0 auto; background: var(--navy);
+    border-radius: 2rem; padding: 5rem; text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-inner::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 350px; height: 350px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(129,214,83,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-inner h2 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--white);
+    line-height: 1.2; margin-bottom: 1rem; letter-spacing: -0.02em; position: relative; z-index: 1;
+  }
+  .cta-inner h2 em { font-style: normal; color: var(--green); }
+  .cta-inner p { color: rgba(255,255,255,0.55); font-size: 1.05rem; line-height: 1.75; margin-bottom: 2.5rem; position: relative; z-index: 1; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; margin-bottom: 2rem; }
+  .cta-note { font-size: 0.82rem; color: rgba(255,255,255,0.3); position: relative; z-index: 1; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 2.5rem 5%; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem; background: var(--white);
+  }
+  footer p { font-size: 0.83rem; color: var(--gray-text); font-weight: 300; }
+  .footer-links { display: flex; gap: 2rem; list-style: none; }
+  footer a { font-size: 0.83rem; color: var(--gray-text); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--green-dark); }
+
+  /* ─── WHATSAPP FLOAT ─── */
+  .whatsapp-float {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+    width: 56px; height: 56px; background: #25D366; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.4); text-decoration: none; transition: transform 0.2s;
+  }
+  .whatsapp-float:hover { transform: scale(1.1); }
+  .whatsapp-float svg { width: 28px; height: 28px; fill: white; }
+
+  /* ─── SUPORTE FIXO ─── */
+  .suporte-fixo {
+    position: fixed; bottom: 2rem; left: 2rem; z-index: 200;
+    display: flex; align-items: center; cursor: pointer; text-decoration: none;
+    border-radius: 2rem; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(33,211,102,0.35); transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .suporte-fixo:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(33,211,102,0.45); }
+  .suporte-fixo-inner {
+    display: flex; align-items: center; background-color: #21D366; color: #fff;
+    padding: 12px 18px; min-height: 50px; gap: 10px; border-radius: 2rem;
+  }
+  .suporte-fixo-inner svg { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
+  .suporte-fixo-inner span { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; white-space: nowrap; }
+  @media (max-width: 600px) {
+    .suporte-fixo { bottom: 1.25rem; left: 1rem; }
+    .suporte-fixo-inner span { display: none; }
+    .suporte-fixo-inner { padding: 13px; border-radius: 50%; }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-dot"></span>
+    Ztech Sistemas
+  </a>
+  <ul>
+    <li><a href="#planos">Planos</a></li>
+    <li><a href="#indicadores">Indicadores</a></li>
+    <li><a href="#diferenciais">Diferenciais</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="https://wa.me/556231426268" class="nav-cta" target="_blank">Falar com especialista</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="home">
+  <div class="hero-bg-glow hero-bg-glow-1"></div>
+  <div class="hero-bg-glow hero-bg-glow-2"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">AMS — Application Management Services</div>
+      <h1>O time de TI que <em>entende o seu negócio</em></h1>
+      <p class="hero-desc">Consultoria e suporte especializado em <strong style="color:rgba(255,255,255,0.85)">Winthor e TOTVS Chef</strong> — com mais de 20 anos de experiência. Você foca no seu negócio, nós cuidamos da tecnologia.</p>
+      <div class="hero-actions">
+        <a href="#planos" class="btn-primary">Ver planos AMS →</a>
+        <a href="https://wa.me/556231426268" class="btn-ghost" target="_blank">Falar com especialista</a>
+      </div>
+    </div>
+    <div class="hero-right fade-up">
+      <div class="hero-problem-card">
+        <h3>O desafio do mercado</h3>
+        <ul class="problem-list">
+          <li>Difícil contratar analistas especializados em Winthor</li>
+          <li>Custo alto com time interno de TI</li>
+          <li>Operação parada por erros sem suporte rápido</li>
+          <li>Falta de visão estratégica sobre os processos</li>
+        </ul>
+      </div>
+      <div class="hero-solution-card">
+        <h3>A solução Ztech AMS</h3>
+        <ul class="solution-list">
+          <li>Equipe altamente capacitada à sua disposição</li>
+          <li>Atendimento via WhatsApp, portal e e-mail</li>
+          <li>Mais de 100 indicadores monitorados</li>
+          <li>Sempre entregamos mais que o contratado</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ O QUE É AMS ═══ -->
+<section class="what-section" id="ams">
+  <div class="what-inner">
+    <div>
+      <div class="section-eyebrow">O que é AMS</div>
+      <h2 class="section-title">Tecnologia que <em>entende de negócio</em></h2>
+      <p class="section-desc">O AMS (Application Management Services) da Ztech é mais do que suporte técnico. Somos um time de tecnologia que domina o Winthor, o TOTVS Chef e todo o ecossistema que impacta a sua operação — de perto, de forma contínua.</p>
+      <div class="what-points">
+        <div class="what-point fade-up">
+          <div class="what-point-icon">🔧</div>
+          <div>
+            <h4>Sustentação Operacional</h4>
+            <p>Resolução de erros, dúvidas e bloqueios no dia a dia, com condução junto aos fornecedores quando necessário.</p>
+          </div>
+        </div>
+        <div class="what-point fade-up" style="transition-delay:.1s">
+          <div class="what-point-icon">📊</div>
+          <div>
+            <h4>Gestão por Indicadores</h4>
+            <p>Monitoramento contínuo com mais de 100 indicadores — vendas, estoque, compras, financeiro e muito mais.</p>
+          </div>
+        </div>
+        <div class="what-point fade-up" style="transition-delay:.2s">
+          <div class="what-point-icon">🚀</div>
+          <div>
+            <h4>Melhoria Contínua</h4>
+            <p>Análise de processos, implementação de melhorias e criação de relatórios personalizados para a sua operação.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="what-visual fade-up">
+      <div class="what-stat">
+        <div class="what-stat-num">20+</div>
+        <div class="what-stat-label">anos de experiência com Winthor e TOTVS</div>
+      </div>
+      <div class="what-stat accent">
+        <div class="what-stat-num">100+</div>
+        <div class="what-stat-label">indicadores monitorados no plano Advanced</div>
+      </div>
+      <div class="what-stat span2">
+        <div class="what-stat-num" style="font-size:1.6rem; color: rgba(255,255,255,0.85);">Viemos da fábrica</div>
+        <div class="what-stat-label" style="margin-top:0.5rem; font-size:0.9rem; max-width:380px; margin-left:auto; margin-right:auto;">Criamos boa parte dos produtos que hoje ofertamos neste modelo de suporte. Conhecemos o sistema por dentro.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PÚBLICO ALVO ═══ -->
+<section class="audience-section">
+  <div class="audience-inner">
+    <div class="audience-header fade-up">
+      <div class="section-eyebrow">Para quem é o AMS</div>
+      <h2 class="section-title">Feito para quem precisa de <em>resultado</em></h2>
+    </div>
+    <div class="audience-grid">
+      <div class="audience-card fade-up">
+        <div class="audience-icon">🏪</div>
+        <h3>Pequenas e Médias Empresas</h3>
+        <p>Empresas que operam com Winthor ou TOTVS Chef e precisam de suporte especializado sem manter um time interno fixo.</p>
+      </div>
+      <div class="audience-card fade-up" style="transition-delay:.1s">
+        <div class="audience-icon">💼</div>
+        <h3>Empresas sem TI própria</h3>
+        <p>Negócios que dependem do sistema mas não têm uma equipe de tecnologia dedicada. A Ztech vira a sua TI.</p>
+      </div>
+      <div class="audience-card fade-up" style="transition-delay:.2s">
+        <div class="audience-icon">📈</div>
+        <h3>Quem precisa evoluir</h3>
+        <p>Clientes que querem melhorar processos, implantar novas rotinas e crescer com o sistema que já possuem.</p>
+      </div>
+      <div class="audience-card fade-up" style="transition-delay:.3s">
+        <div class="audience-icon">🏬</div>
+        <h3>Varejo, Atacado & Food Service</h3>
+        <p>Especialistas em PDV, atacado, distribuição e food service — todos os módulos do Winthor (exceto logística) e TOTVS Chef.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 3 PLANOS ═══ -->
+<section class="plans-section" id="planos">
+  <div class="plans-inner">
+    <div class="plans-header fade-up">
+      <div class="section-eyebrow">3 níveis de atendimento</div>
+      <h2 class="section-title">Escolha o plano certo para a sua operação</h2>
+      <p class="section-desc">Do suporte básico ao acompanhamento estratégico — encontre o nível ideal para o seu momento.</p>
+    </div>
+
+    <div class="plans-grid">
+
+      <!-- BASIC -->
+      <div class="plan-card plan-basic fade-up">
+        <div class="plan-header">
+          <div class="plan-level-badge">Basic</div>
+          <div class="plan-name">AMS Basic</div>
+          <div class="plan-tagline">Suporte técnico e resolução de erros no dia a dia da operação.</div>
+          <div class="plan-sla"><div class="plan-sla-dot"></div> Atendimento 08:00 às 19:00</div>
+        </div>
+        <div class="plan-body">
+          <ul class="plan-items">
+            <li>Suporte a erros e dúvidas operacionais</li>
+            <li>Atendimento de primeiro nível</li>
+            <li>Condução dos erros junto aos fornecedores (Winthor / TOTVS Chef)</li>
+            <li>SLA de atendimento definido</li>
+          </ul>
+          <div class="plan-channels">
+            <div class="plan-channel">💬 WhatsApp</div>
+            <div class="plan-channel">🖥️ Portal</div>
+            <div class="plan-channel">📧 E-mail</div>
+          </div>
+          <div class="plan-highlight">
+            Ideal para empresas que precisam de estabilidade operacional e um canal confiável de suporte.
+          </div>
+          <a href="https://wa.me/556231426268?text=Olá,%20tenho%20interesse%20no%20plano%20AMS%20Basic" class="btn-plan" target="_blank">Contratar Basic →</a>
+        </div>
+      </div>
+
+      <!-- STANDARD -->
+      <div class="plan-card plan-standard featured fade-up" style="transition-delay:.1s">
+        <div class="plan-header">
+          <div class="featured-ribbon">Mais escolhido</div>
+          <div class="plan-level-badge">Standard</div>
+          <div class="plan-name">AMS Standard</div>
+          <div class="plan-tagline">Sustentação mais gestão de processos e relatórios sob medida.</div>
+          <div class="plan-sla"><div class="plan-sla-dot"></div> Atendimento 24 × 7</div>
+        </div>
+        <div class="plan-body">
+          <ul class="plan-items">
+            <li>Tudo do plano Basic</li>
+            <li>Treinamento de processos existentes</li>
+            <li>Implementação de processos existentes</li>
+            <li>Criação de relatórios personalizados</li>
+            <li>Até 4 horas mensais de consultoria dedicada</li>
+          </ul>
+          <div class="plan-channels">
+            <div class="plan-channel">💬 WhatsApp</div>
+            <div class="plan-channel">🖥️ Portal</div>
+            <div class="plan-channel">📧 E-mail</div>
+          </div>
+          <div class="plan-highlight">
+            ✦ Atendimento 24×7 — seu sistema sempre tem suporte, qualquer hora, qualquer dia.
+          </div>
+          <a href="https://wa.me/556231426268?text=Olá,%20tenho%20interesse%20no%20plano%20AMS%20Standard" class="btn-plan" target="_blank">Contratar Standard →</a>
+        </div>
+      </div>
+
+      <!-- ADVANCED -->
+      <div class="plan-card plan-advanced fade-up" style="transition-delay:.2s">
+        <div class="plan-header">
+          <div class="plan-level-badge">Advanced</div>
+          <div class="plan-name">AMS Advanced</div>
+          <div class="plan-tagline">Alta disponibilidade com especialista dedicado e gestão por indicadores.</div>
+          <div class="plan-sla" style="border-color:rgba(4,86,181,0.25);background:rgba(4,86,181,0.08)">
+            <div class="plan-sla-dot" style="background:#7AB8F5"></div> Alta disponibilidade
+          </div>
+        </div>
+        <div class="plan-body">
+          <ul class="plan-items">
+            <li>Tudo do plano Standard</li>
+            <li>20 horas mensais de dedicação exclusiva</li>
+            <li>Monitoramento de indicadores e processos</li>
+            <li>Mais de 100 indicadores acompanhados</li>
+            <li>Análise de melhoria contínua</li>
+          </ul>
+          <div class="plan-channels">
+            <div class="plan-channel">💬 WhatsApp</div>
+            <div class="plan-channel">🖥️ Portal</div>
+            <div class="plan-channel">📧 E-mail</div>
+            <div class="plan-channel">📍 On-site</div>
+          </div>
+          <div class="plan-highlight">
+            🎯 Especialista dedicado: 20h/mês de atenção exclusiva ao seu negócio e operação.
+          </div>
+          <a href="https://wa.me/556231426268?text=Olá,%20tenho%20interesse%20no%20plano%20AMS%20Advanced" class="btn-plan" target="_blank">Contratar Advanced →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COMPARISON TABLE ═══ -->
+<section class="compare-section">
+  <div class="compare-inner">
+    <div class="compare-header fade-up">
+      <div class="section-eyebrow">Comparativo</div>
+      <h2 class="section-title">O que está incluído em cada plano</h2>
+    </div>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Recurso</th>
+          <th>Basic</th>
+          <th class="th-featured">Standard</th>
+          <th>Advanced</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Suporte a erros e dúvidas</td>
+          <td><span class="check-yes">✓</span></td>
+          <td class="featured-col"><span class="check-yes">✓</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>Condução com fornecedores</td>
+          <td><span class="check-yes">✓</span></td>
+          <td class="featured-col"><span class="check-yes">✓</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>Atendimento via WhatsApp, Portal e E-mail</td>
+          <td><span class="check-yes">✓</span></td>
+          <td class="featured-col"><span class="check-yes">✓</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>Horário de atendimento</td>
+          <td><span class="check-partial">08h–19h</span></td>
+          <td class="featured-col"><span class="check-yes">24 × 7</span></td>
+          <td><span class="check-yes">Alta disp.</span></td>
+        </tr>
+        <tr>
+          <td>Treinamento de processos</td>
+          <td><span class="check-no">—</span></td>
+          <td class="featured-col"><span class="check-yes">✓</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>Implementação de processos</td>
+          <td><span class="check-no">—</span></td>
+          <td class="featured-col"><span class="check-yes">✓</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>Relatórios personalizados</td>
+          <td><span class="check-no">—</span></td>
+          <td class="featured-col"><span class="check-partial">4h/mês</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>Horas mensais dedicadas</td>
+          <td><span class="check-no">—</span></td>
+          <td class="featured-col"><span class="check-no">—</span></td>
+          <td><span class="check-yes">20h/mês</span></td>
+        </tr>
+        <tr>
+          <td>Monitoramento de indicadores</td>
+          <td><span class="check-no">—</span></td>
+          <td class="featured-col"><span class="check-no">—</span></td>
+          <td><span class="check-yes">100+</span></td>
+        </tr>
+        <tr>
+          <td>Análise de melhoria contínua</td>
+          <td><span class="check-no">—</span></td>
+          <td class="featured-col"><span class="check-no">—</span></td>
+          <td><span class="check-yes">✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ INDICADORES ═══ -->
+<section class="indicators-section" id="indicadores">
+  <div class="indicators-inner">
+    <div class="indicators-header fade-up">
+      <div class="section-eyebrow">Inteligência Operacional</div>
+      <h2 class="section-title">Mais de 100 indicadores <br>estratégicos monitorados</h2>
+      <p class="section-desc">No plano Advanced, sua operação é acompanhada de perto com análises específicas para cada segmento do seu negócio.</p>
+    </div>
+
+    <div class="indicators-count fade-up">
+      100+
+      <span>indicadores de gestão disponíveis</span>
+    </div>
+
+    <div class="indicators-grid">
+      <div class="indicator-card"><span class="indicator-icon">🏭</span><div class="indicator-name">Atacado e Distribuição</div></div>
+      <div class="indicator-card"><span class="indicator-icon">🛒</span><div class="indicator-name">Varejo e PDV</div></div>
+      <div class="indicator-card"><span class="indicator-icon">🍽️</span><div class="indicator-name">Food Service</div></div>
+      <div class="indicator-card"><span class="indicator-icon">📦</span><div class="indicator-name">Estoque e Compras</div></div>
+      <div class="indicator-card"><span class="indicator-icon">💰</span><div class="indicator-name">Financeiro</div></div>
+      <div class="indicator-card"><span class="indicator-icon">📈</span><div class="indicator-name">Comercial e Vendas</div></div>
+      <div class="indicator-card"><span class="indicator-icon">⚡</span><div class="indicator-name">Performance Operacional</div></div>
+      <div class="indicator-card"><span class="indicator-icon">🔄</span><div class="indicator-name">Processos Internos</div></div>
+      <div class="indicator-card"><span class="indicator-icon">📊</span><div class="indicator-name">Gestão por DRE</div></div>
+    </div>
+
+    <div class="benefits-row fade-up">
+      <div class="benefit-item"><div class="benefit-dot"></div><div class="benefit-text">Decisões mais rápidas e embasadas em dados reais</div></div>
+      <div class="benefit-item"><div class="benefit-dot"></div><div class="benefit-text">Identificação de gargalos antes que virem problema</div></div>
+      <div class="benefit-item"><div class="benefit-dot"></div><div class="benefit-text">Acompanhamento de metas em tempo real</div></div>
+      <div class="benefit-item"><div class="benefit-dot"></div><div class="benefit-text">Controle de ruptura e excesso de estoque</div></div>
+      <div class="benefit-item"><div class="benefit-dot"></div><div class="benefit-text">Visão integrada de toda a operação</div></div>
+      <div class="benefit-item"><div class="benefit-dot"></div><div class="benefit-text">Alertas e ações automáticas via Zensuite Audit</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIFERENCIAIS ═══ -->
+<section class="diff-section" id="diferenciais">
+  <div class="diff-inner">
+    <div class="diff-header fade-up">
+      <div class="section-eyebrow">Por que a Ztech</div>
+      <h2 class="section-title">Nosso ponto forte é <em>conhecer o seu negócio</em></h2>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-card fade-up">
+        <div class="diff-card-num">🏆</div>
+        <h3>20+ anos em Winthor</h3>
+        <p>Amplo conhecimento do sistema Winthor em todos os módulos — varejo, atacado, distribuição e food service. Viemos da fábrica.</p>
+      </div>
+      <div class="diff-card fade-up" style="transition-delay:.1s">
+        <div class="diff-card-num">💡</div>
+        <h3>Conhecimento de Negócio</h3>
+        <p>Não somos só técnicos — entendemos de gestão, processos e operação. Falamos a mesma língua que o seu time.</p>
+      </div>
+      <div class="diff-card fade-up" style="transition-delay:.2s">
+        <div class="diff-card-num">🗄️</div>
+        <h3>Infra, DBA e Integrações</h3>
+        <p>Atuação completa em infraestrutura, banco de dados Oracle e integração com plataformas e serviços externos.</p>
+      </div>
+      <div class="diff-card fade-up" style="transition-delay:.3s">
+        <div class="diff-card-num">🤝</div>
+        <h3>Acessíveis e Presentes</h3>
+        <p>Somos acessíveis, próximos dos nossos clientes e sempre entregamos mais do que foi contratado.</p>
+      </div>
+      <div class="diff-card fade-up" style="transition-delay:.4s">
+        <div class="diff-card-num">🔢</div>
+        <h3>Gestão por Indicadores</h3>
+        <p>Monitoramos o que importa para o seu negócio, com dashboards e alertas que transformam dados em ação.</p>
+      </div>
+      <div class="diff-card fade-up" style="transition-delay:.5s">
+        <div class="diff-card-num">🏪</div>
+        <h3>Especialistas em Varejo</h3>
+        <p>PDV, atacado, distribuição e food service — especialização profunda nos segmentos que atendemos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVIÇOS COMPLEMENTARES ═══ -->
+<section class="services-section" id="servicos">
+  <div class="services-inner">
+    <div class="services-header fade-up">
+      <div class="section-eyebrow">Ecossistema completo</div>
+      <h2 class="section-title">Serviços que complementam o AMS</h2>
+      <p class="section-desc">Além do AMS, a Ztech oferece um portfólio completo de soluções que ampliam o valor da sua operação — tudo de um único parceiro de confiança.</p>
+    </div>
+    <div class="services-wrapper fade-up">
+      <div>
+        <div class="service-col-title">ERP & Consultoria</div>
+        <div class="service-item">
+          Consultoria Winthor
+          <div class="service-item-sub">Implantação, evolução e melhoria de processos</div>
+        </div>
+        <div class="service-item">
+          Consultoria TOTVS Chef
+          <div class="service-item-sub">ERP especializado para food service</div>
+        </div>
+        <div class="service-item">
+          Customização sob Medida
+          <div class="service-item-sub">Rotinas e processos específicos do cliente</div>
+        </div>
+        <div class="service-item">
+          Integração com Plataformas
+          <div class="service-item-sub">E-commerce, marketplaces, serviços externos</div>
+        </div>
+      </div>
+      <div>
+        <div class="service-col-title">Infraestrutura & DBA</div>
+        <div class="service-item">
+          DBA Oracle
+          <div class="service-item-sub">Otimização e monitoramento do banco de dados</div>
+        </div>
+        <div class="service-item">
+          Infraestrutura de TI
+          <div class="service-item-sub">Servidores, firewall Mikrotik e pfSense</div>
+        </div>
+        <div class="service-item">
+          Virtualização de Servidores
+          <div class="service-item-sub">Ambientes seguros e de alta disponibilidade</div>
+        </div>
+      </div>
+      <div>
+        <div class="service-col-title">Zensuite — Plataforma Própria</div>
+        <div class="service-item">
+          Zensuite Analytics
+          <div class="service-item-sub">BI escalável com indicadores de gestão, desempenho e controladoria</div>
+        </div>
+        <div class="service-item">
+          Zensuite Audit
+          <div class="service-item-sub">Plataforma de auditoria integrada ao Winthor e WhatsApp — controla, monitora e dispara ações</div>
+        </div>
+        <div class="service-item">
+          API de Integrações
+          <div class="service-item-sub">Integre o Winthor ou qualquer sistema via API tokenizada</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <div class="cta-inner fade-up">
+    <h2>Pronto para ter um especialista <em>ao lado da sua operação?</em></h2>
+    <p>Fale com nosso time e descubra qual plano AMS é ideal para o seu negócio. Diagnóstico sem compromisso.</p>
+    <div class="cta-buttons">
+      <a href="https://wa.me/556231426268?text=Olá,%20quero%20conhecer%20o%20AMS%20da%20Ztech" class="btn-primary" target="_blank">💬 Falar pelo WhatsApp</a>
+      <a href="mailto:comercial@ztechsistemas.com.br" class="btn-ghost" style="color:rgba(255,255,255,0.6)">Enviar e-mail →</a>
+    </div>
+    <div class="cta-note">Canal homologado TOTVS · Winthor · TOTVS Chef · +20 anos de experiência</div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p>© 2025 Ztech Sistemas — Canal Homologado TOTVS</p>
+  <ul class="footer-links">
+    <li><a href="#home">AMS</a></li>
+    <li><a href="#planos">Planos</a></li>
+    <li><a href="#indicadores">Indicadores</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="index.html">Site Principal</a></li>
+  </ul>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/556231426268" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+  </svg>
+</a>
+
+<!-- SUPORTE FIXO -->
+<a href="https://wa.me/556231426268" class="suporte-fixo" target="_blank" aria-label="Fale com o Suporte">
+  <div class="suporte-fixo-inner">
+    <svg viewBox="0 0 17 17" xmlns="http://www.w3.org/2000/svg"><path d="M16.5333 8.7668C16.5333 13.0668 13.02 16.5535 8.67999 16.5535C7.29999 16.5535 6.01333 16.2001 4.87999 15.5868L0.533325 16.9668L1.95333 12.7868C1.21185 11.5746 0.81965 10.1811 0.819992 8.76013C0.826659 4.45346 4.34666 0.966797 8.68666 0.966797C13.0133 0.966797 16.5333 4.45346 16.5333 8.7668ZM8.67999 2.20013C5.03999 2.20013 2.07999 5.14013 2.07999 8.75346C2.07999 10.1868 2.54666 11.5135 3.33333 12.5935L2.50666 15.0335L5.03999 14.2335C6.12135 14.9422 7.38707 15.3178 8.67999 15.3135C12.32 15.3135 15.28 12.3801 15.28 8.76013C15.2712 7.01671 14.5715 5.3479 13.3343 4.11948C12.0972 2.89106 10.4234 2.20325 8.67999 2.2068V2.20013ZM12.6467 10.5535C12.5933 10.4735 12.4667 10.4268 12.2733 10.3335C12.0867 10.2401 11.14 9.77346 10.96 9.71346C10.7867 9.6468 10.6533 9.61346 10.5267 9.8068C10.3933 10.0001 10.0267 10.4268 9.91999 10.5535C9.80666 10.6868 9.69333 10.7001 9.49999 10.6068C9.30666 10.5068 8.68666 10.3068 7.95333 9.65346C7.53454 9.26854 7.17509 8.82372 6.88666 8.33346C6.76666 8.14013 6.86666 8.04013 6.96666 7.9468C7.05333 7.86013 7.15999 7.72013 7.25333 7.61346C7.35333 7.50013 7.38666 7.41346 7.44666 7.29346C7.51333 7.16013 7.47999 7.05346 7.43333 6.96013C7.37999 6.86013 6.99999 5.92013 6.83333 5.54013C6.67333 5.15346 6.51333 5.22013 6.40666 5.22013C6.29333 5.22013 6.15999 5.20013 6.03333 5.20013C5.89999 5.20013 5.69999 5.25346 5.51999 5.44013C5.34666 5.63346 4.85333 6.09346 4.85333 7.04013C4.85333 7.97346 5.53999 8.88013 5.63333 9.01346C5.72666 9.14013 6.96666 11.1268 8.91999 11.8935C10.88 12.6601 10.88 12.4068 11.2333 12.3735C11.5867 12.3401 12.3667 11.9068 12.5333 11.4668C12.6933 11.0201 12.6933 10.6335 12.6467 10.5535Z"/></svg>
+    <span>Fale com o Suporte</span>
+  </div>
+</a>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("visible"); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll(".fade-up").forEach(el => obs.observe(el));
+  window.addEventListener("scroll", () => {
+    document.getElementById("navbar").classList.toggle("scrolled", window.scrollY > 40);
+  });
+</script>
+
+</body>
+</html>
