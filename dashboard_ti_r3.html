@@ -103,7 +103,8 @@ const AND_ORDER=['Concluído','Em andamento','Pendente','Sem ação'];
 const AND_COLORS={'Concluído':'#54AE32','Em andamento':'#F2A900','Pendente':'#e74c3c','Sem ação':'#5b7099'};
 const econ=r=>r.val-(r.novo!=null?r.novo:(r.status==='CANCELAR'?0:r.val));
 const sum=(a,f)=>a.reduce((s,r)=>s+f(r),0);
-DATA.forEach(r=>{if(r.andamento==null)r.andamento=(r.status==='MANTER'?'Sem ação':'Pendente');});
+const fmtDate=v=>{if(v==null||v==='')return '';if(v instanceof Date)return v.toLocaleDateString('pt-BR');if(typeof v==='number'&&v>30000){const d=new Date(Math.round((v-25569)*86400*1000));return isNaN(d)?String(v):d.toLocaleDateString('pt-BR');}return String(v).trim();};
+DATA.forEach(r=>{if(r.andamento==null)r.andamento=(r.status==='MANTER'?'Sem ação':'Pendente');if(r.vig==null)r.vig='';});
 let activeFilter='TODOS';
 function groupBy(rows,key){const m={};rows.forEach(r=>{const k=(r[key]||'(vazio)').toString();(m[k]=m[k]||{n:0,v:0,novo:0});m[k].n++;m[k].v+=r.val;m[k].novo+=(r.novo!=null?r.novo:r.val);});
   return Object.entries(m).map(([k,o])=>({k,n:o.n,v:o.v,novo:o.novo,eco:o.v-o.novo})).sort((a,b)=>b.v-a.v);}
@@ -154,35 +155,35 @@ function hbars(arr,withCount){const max=Math.max(...arr.map(a=>a.v),1);
     <div class="vv"><div class="v1">${BRL(a.v)}</div><div class="v2">novo ${BRL(a.novo)}</div><div class="v3">−${BRL(a.eco)} · ${PCT(a.v?a.eco/a.v:0)}</div></div></div>`;}).join('');}
 function renderFull(){
  const rows=activeFilter==='TODOS'?DATA:DATA.filter(r=>r.status===activeFilter);
- let h=`<thead><tr><th>Status / Fornecedor</th><th>Andamento</th><th class="num">Valor hoje</th><th class="num">Novo valor</th><th class="num">Economia</th><th class="num">%</th></tr></thead><tbody>`;
+ let h=`<thead><tr><th>Status / Fornecedor</th><th>Andamento</th><th class="num">Valor hoje</th><th class="num">Novo valor</th><th class="num">Economia</th><th class="num">%</th><th>Vigência</th></tr></thead><tbody>`;
  let gV=0,gN=0;
  ST_ORDER.filter(s=>rows.some(r=>r.status===s)).forEach(s=>{
    const sr=rows.filter(r=>r.status===s);const sV=sum(sr,r=>r.val),sN=sum(sr,r=>r.novo!=null?r.novo:r.val),sE=sV-sN;gV+=sV;gN+=sN;
-   h+=`<tr class="sgrp"><td><b style="color:${ST_COLORS[s]}">${s}</b> · ${sr.length}</td><td></td><td class="num"><b>${BRL(sV)}</b></td><td class="num"><b>${BRL(sN)}</b></td><td class="num"><b style="color:var(--green-l)">${BRL(sE)}</b></td><td class="num"><b>${PCT(sV?sE/sV:0)}</b></td></tr>`;
-   const byF={};sr.forEach(r=>{(byF[r.parc]=byF[r.parc]||{v:0,n:0,a:new Set()});byF[r.parc].v+=r.val;byF[r.parc].n+=(r.novo!=null?r.novo:r.val);byF[r.parc].a.add(r.andamento);});
-   Object.entries(byF).sort((a,b)=>b[1].v-a[1].v).forEach(([f,o])=>{const e=o.v-o.n;const a=o.a.size===1?[...o.a][0]:'Misto';
-     h+=`<tr><td style="padding-left:22px">${f}</td><td>${andTag(a)}</td><td class="num">${BRL(o.v)}</td><td class="num">${BRL(o.n)}</td><td class="num" style="color:var(--green-l)">${BRL(e)}</td><td class="num">${PCT(o.v?e/o.v:0)}</td></tr>`;});
+   h+=`<tr class="sgrp"><td><b style="color:${ST_COLORS[s]}">${s}</b> · ${sr.length}</td><td></td><td class="num"><b>${BRL(sV)}</b></td><td class="num"><b>${BRL(sN)}</b></td><td class="num"><b style="color:var(--green-l)">${BRL(sE)}</b></td><td class="num"><b>${PCT(sV?sE/sV:0)}</b></td><td></td></tr>`;
+   const byF={};sr.forEach(r=>{(byF[r.parc]=byF[r.parc]||{v:0,n:0,a:new Set(),d:new Set()});byF[r.parc].v+=r.val;byF[r.parc].n+=(r.novo!=null?r.novo:r.val);byF[r.parc].a.add(r.andamento);if(r.vig)byF[r.parc].d.add(r.vig);});
+   Object.entries(byF).sort((a,b)=>b[1].v-a[1].v).forEach(([f,o])=>{const e=o.v-o.n;const a=o.a.size===1?[...o.a][0]:'Misto';const dd=[...o.d];const vig=dd.length===0?'—':(dd.length===1?dd[0]:'vários');
+     h+=`<tr><td style="padding-left:22px">${f}</td><td>${andTag(a)}</td><td class="num">${BRL(o.v)}</td><td class="num">${BRL(o.n)}</td><td class="num" style="color:var(--green-l)">${BRL(e)}</td><td class="num">${PCT(o.v?e/o.v:0)}</td><td>${vig}</td></tr>`;});
  });
  const gE=gV-gN;
- h+=`<tr class="gtot"><td><b>TOTAL GERAL</b></td><td></td><td class="num"><b>${BRL(gV)}</b></td><td class="num"><b>${BRL(gN)}</b></td><td class="num"><b>${BRL(gE)}</b></td><td class="num"><b>${PCT(gV?gE/gV:0)}</b></td></tr></tbody>`;
+ h+=`<tr class="gtot"><td><b>TOTAL GERAL</b></td><td></td><td class="num"><b>${BRL(gV)}</b></td><td class="num"><b>${BRL(gN)}</b></td><td class="num"><b>${BRL(gE)}</b></td><td class="num"><b>${PCT(gV?gE/gV:0)}</b></td><td></td></tr></tbody>`;
  document.getElementById('fullTbl').innerHTML=h;
  document.getElementById('filters').innerHTML=['TODOS',...ST_ORDER].map(s=>{const set=s==='TODOS'?DATA:DATA.filter(r=>r.status===s);const e=sum(set,econ);return `<span class="chip ${activeFilter===s?'on':''}" onclick="activeFilter='${s}';renderFull()">${s} · ${BRL(set.reduce((a,r)=>a+r.val,0))}${s!=='TODOS'?' (-'+BRL(e)+')':''}</span>`;}).join('');
 }
 // ---------- carregar dados ----------
 function flag(msg,ok){const f=document.getElementById('flag');f.className='flag '+(ok?'ok':'err');f.style.display='block';f.innerHTML=msg;}
 function parseWB(buf,srcName){
- const wb=XLSX.read(new Uint8Array(buf),{type:'array'});
+ const wb=XLSX.read(new Uint8Array(buf),{type:'array',cellDates:true});
  const sh=wb.SheetNames.find(n=>n.toUpperCase().includes('DESPESA'))||wb.SheetNames[0];
  const raw=XLSX.utils.sheet_to_json(wb.Sheets[sh],{defval:''});const norm=s=>(s||'').toString().trim().toUpperCase();
  const fk=(o,...alts)=>{const ks=Object.keys(o);for(const a of alts){const k=ks.find(k=>norm(k).includes(a));if(k)return k;}return null;};
  if(!raw.length)throw'planilha vazia';const s0=raw[0];
- const kConta=fk(s0,'CONTA'),kParc=fk(s0,'PARCEIRO'),kHist=fk(s0,'HIST'),kQuem=fk(s0,'QUEM'),kFazer=fk(s0,'FAZER'),kCC=fk(s0,'CENTRO'),kDep=fk(s0,'DEPART'),kVal=fk(s0,'VALOR','VLR','TÍTULO'),kNovo=fk(s0,'NOVO'),kSt=fk(s0,'STATUS'),kAnd=fk(s0,'ANDAMENTO');
+ const kConta=fk(s0,'CONTA'),kParc=fk(s0,'PARCEIRO'),kHist=fk(s0,'HIST'),kQuem=fk(s0,'QUEM'),kFazer=fk(s0,'FAZER'),kCC=fk(s0,'CENTRO'),kDep=fk(s0,'DEPART'),kVal=fk(s0,'VALOR','VLR','TÍTULO'),kNovo=fk(s0,'NOVO'),kSt=fk(s0,'STATUS'),kAnd=fk(s0,'ANDAMENTO'),kVig=fk(s0,'VIG','ENTRA EM VIGOR');
  const num=v=>{if(typeof v==='string')v=v.replace(/[R$\s.]/g,'').replace(',','.');return Math.round((Number(v)||0)*100)/100;};
  const out=[];raw.forEach(r=>{const conta=(r[kConta]||'').toString().trim();const val=num(r[kVal]);if(!conta&&!val)return;
   const cc=norm(r[kCC]);const st=norm(r[kSt]);const novo=kNovo&&r[kNovo]!==''?num(r[kNovo]):(st==='CANCELAR'?0:val);
   out.push({conta,parc:(r[kParc]||'').toString().trim(),hist:(r[kHist]||'').toString().trim(),quem:(r[kQuem]||'').toString().trim(),fazer:(r[kFazer]||'').toString().trim(),cc,
    dep:(kDep&&r[kDep])?String(r[kDep]).trim():((/MARKETING/.test(norm(conta))||cc==='MARKETING')?'Marketing':'Tecnologia'),
-   val,novo,status:st,andamento:(kAnd&&r[kAnd]?String(r[kAnd]).trim():(st==='MANTER'?'Sem ação':'Pendente'))});});
+   val,novo,status:st,andamento:(kAnd&&r[kAnd]?String(r[kAnd]).trim():(st==='MANTER'?'Sem ação':'Pendente')),vig:kVig?fmtDate(r[kVig]):''});});
  DATA=out.filter(r=>r.status);document.getElementById('src').textContent='Fonte: '+srcName+' ('+DATA.length+' linhas)';activeFilter='TODOS';render();
  flag('✅ Atualizado: '+DATA.length+' lançamentos carregados de '+srcName+'.',true);
 }
